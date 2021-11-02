@@ -18,5 +18,6 @@ data class Meme(
     @field:SerializedName("height")
     val height: Int,
     @field:SerializedName("box_count")
-    val boxCount: Int
+    val boxCount: Int,
+    var checked: Boolean = false
 )

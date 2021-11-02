@@ -11,7 +11,7 @@ import com.example.memes.repository.MemeRepository
 class MainActivity : AppCompatActivity() {
 
     private val memeService = MemeService.getInstance()
-    private val viewModel: MainViewModel by lazy {
+    private val viewModel by lazy {
         ViewModelProvider(
             this,
             MainViewModelFactory(MemeRepository(memeService))
@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val memeListAdapter by lazy {
-        MemeListAdapter()
+        MemeListAdapter(viewModel)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

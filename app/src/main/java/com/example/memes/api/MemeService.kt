@@ -11,7 +11,7 @@ interface MemeService {
     fun getMemes(): Call<MemeResponse>
 
     companion object {
-        const val BASE_URL = "https://api.imgflip.com/"
+        private const val BASE_URL = "https://api.imgflip.com/"
         var memeService: MemeService? = null
 
         fun getInstance() : MemeService {

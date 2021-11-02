@@ -2,12 +2,14 @@ package com.example.memes
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.memes.databinding.ItemMemeLayoutBinding
 import com.example.memes.model.Meme
 
-class MemeListAdapter : RecyclerView.Adapter<MemeListAdapter.MemeViewHolder>() {
+class MemeListAdapter(private val viewModel: MainViewModel) :
+    RecyclerView.Adapter<MemeListAdapter.MemeViewHolder>() {
 
     var memes = emptyList<Meme>()
 
@@ -18,13 +20,19 @@ class MemeListAdapter : RecyclerView.Adapter<MemeListAdapter.MemeViewHolder>() {
         notifyDataSetChanged()
     }
 
-    class MemeViewHolder(val binding: ItemMemeLayoutBinding) :
+    class MemeViewHolder(private val binding: ItemMemeLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
         fun bind(meme: Meme) {
             with(binding) {
                 memeIdTextView.text = meme.id
                 memeNameTextView.text = meme.name
+                checkBox.isChecked = meme.checked
             }
+        }
+
+        fun setCheckChangeCallback(checkedChangeListener: View.OnClickListener) {
+            binding.checkBox.setOnClickListener(checkedChangeListener)
         }
     }
 
@@ -36,7 +44,11 @@ class MemeListAdapter : RecyclerView.Adapter<MemeListAdapter.MemeViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: MemeViewHolder, position: Int) {
-        holder.bind(memes[position])
+        val currentMeme = memes[position]
+        holder.bind(currentMeme)
+        holder.setCheckChangeCallback {
+            viewModel.updateMemeCheckedStatus(currentMeme.id, !currentMeme.checked)
+        }
     }
 
     override fun getItemCount(): Int {

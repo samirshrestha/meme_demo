@@ -32,4 +32,13 @@ class MainViewModel constructor(private val repository: MemeRepository) : ViewMo
 
         })
     }
+
+    fun updateMemeCheckedStatus(memeId: String, isChecked: Boolean) {
+        // Just updating the list value directly from here.
+        // When switching to DB, update can directly be made to DB and then data can be reflected on UI
+        memeList.value?.let { memes->
+            memes.find { it.id == memeId }?.checked = isChecked
+            memeList.postValue(memes)
+        }
+    }
 }
